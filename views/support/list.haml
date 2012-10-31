@@ -14,9 +14,9 @@
 						%a{:href => "/clusters/#{cluster.id}"}= cluster.props["name"]
 		%td
 		%td
-			%form{:action => "/foo", :method => "post"}
-				Number Should 
-				%select{:version => "version_id"}
+			%form{ :action => "/numbersearch", :method => "post"}
+				Number 
+				%input{:type => "text", :size => "20", :name => "number"}
 				%input{:type => "submit", :value => "Deploy", :class => "btn"}
 	%tr{:align => "left"}
 		%th Debug Logs

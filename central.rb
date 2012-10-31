@@ -5,6 +5,7 @@ require 'resque'
 require 'haml'
 require 'open4'
 require 'json'
+require 'sugarcrm'
 include Open4
 
 DEBUG = true

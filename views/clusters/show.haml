@@ -1,4 +1,4 @@
-%h1= @cluster.props["name"] + " cluster"
+%h1{:class => "page-header"}= @cluster.props["name"] + " cluster"
 %span= @cluster.nodes.size.to_s + " nodes(s)"
 %ul
 	- @cluster.nodes.each do |node|
