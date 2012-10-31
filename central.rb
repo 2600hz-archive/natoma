@@ -21,6 +21,8 @@ end
 
 class Central < Sinatra::Base
 
+  enable :sessions
+
   def initialize
     super
     # read the config file
