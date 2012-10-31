@@ -9,11 +9,8 @@ rparent = Hash.new
 rsugar = Hash.new
 rsugarcontact = Hash.new
 
-puts query
-
 if query.match(/[a-z]/)
   #SEARCH BY ACCOUNT NAME
-  puts "Searching by account name...\n"
   namesearchraw = `curl -sS "#{bigcouchurl}/accounts/_design/accounts/_view/listing_by_name"`
   namesearchparse = JSON.parse(namesearchraw)
   rows = namesearchparse["rows"]
@@ -26,7 +23,6 @@ if query.match(/[a-z]/)
 
 else
   #SEARCH BY PHONE NUMBER
-  puts "Searching by phone number...\n"
   #FORMAT NUMBER
   digits = query.gsub(/\D/, '').split(//)
   if (digits.length == 11 and digits[0] == '1')
@@ -49,52 +45,48 @@ else
     puts "Number not assigned to an account"
     exit
   end
-  puts accountid
 end
 
 accraw = `curl -sS "#{bigcouchurl}/accounts/#{accountid}"`
 accparse = JSON.parse(accraw)
-#PRINT ACCOUNT INFO
+#LOAD INFO INTO HASH
 raccount["id"] = accparse["_id"]
 raccount["name"] = accparse["name"]
 raccount["role"] = accparse["role"]
 raccount["realm"] = accparse["realm"]
-#LOOP TO PRINT INFO OF EACH PARENT ACCOUNT
+#LOOP TO GET INFO OF EACH PARENT ACCOUNT
 for i in 0..accparse["pvt_tree"].length-1
   parentid = accparse["pvt_tree"][i]
   parentraw = `curl -sS "#{bigcouchurl}/accounts/#{parentid}"`
   parentparse = JSON.parse(parentraw)
-  rparent[i]["id"] = accparse["pvt_tree"][i]
-  rparent[i]["name"] = parentparse["name"]
-  rparent[i]["role"] = parentparse["role"]
-  rparent[i]["realm"] = parentparse["realm"]
+  rparent["id#{i}"] = accparse["pvt_tree"][i]
+  rparent["name#{i}"] = parentparse["name"]
+  rparent["role#{i}"] = parentparse["role"]
+  rparent["realm#{i}"] = parentparse["realm"]
 end
 
-puts accparse["name"]
 #SUGARCRM INFO GET
-SugarCRM.connect("http://***REMOVED***:32950/sugar", '***REMOVED***', '***REMOVED***')
-sugaraccount = SugarCRM::Account.find_by_name(accparse["name"])
+crm = SugarCRM.connect("http://***REMOVED***:32950/sugar", '***REMOVED***', '***REMOVED***')
+sugaraccount = crm::Account.find_by_name(accparse["name"])
 rsugar["description"] = sugaraccount.description
 rsugar["website"] = sugaraccount.website
 rsugar["services"] = sugaraccount.account_services_c
 contactcount = 0
+test = Hash.new
 sugaraccount.contacts.each do |contact|
-  rsugarcontact[contactcount]["first_name"] = ["#{contact.first_name}"]
-  rsugarcontact[contactcount]["last_name"] = ["#{contact.last_name}"]
-  rsugarcontact[contactcount]["title"] = ["#{contact.title}"]
-  rsugarcontact[contactcount]["phone_work"] = ["#{contact.phone_work}"]
+  rsugarcontact["first_name#{contactcount}"] = ["#{contact.first_name}"]
+  rsugarcontact["last_name#{contactcount}"] = ["#{contact.last_name}"]
+  rsugarcontact["title#{contactcount}"] = ["#{contact.title}"]
+  rsugarcontact["phone_work#{contactcount}"] = ["#{contact.phone_work}"]
   emailcount = 0
   contact.email_addresses.each do |email|
-    rsugarcontact[contactcount]["email_address"][emailcount] = ["#{email.email_address}"]
+    rsugarcontact["email_address#{contactcount};#{emailcount}"] = ["#{email.email_address}"]
     emailcount = emailcount+1
   end
   contactcount = contactcount+1
 end
 
-puts rsugar["description"]
-puts rsugarcontact[0]["first_name"]
-
-
+puts rsugarcontact["email_address0;0"]
 #RETURN INFO
 return raccount, rparent, rsugar, rsugarcontact
 end
