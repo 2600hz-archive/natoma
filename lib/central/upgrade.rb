@@ -9,7 +9,7 @@ class Central
 			log = Log.new object_id
 			b_stdout = Log::Buffer.new object_id, "stdout"
       b_stderr = Log::Buffer.new object_id, "stderr"
-			command = "ssh -p 22223 #{ip} 'cat /etc/issue'"
+			command = "ssh -i ~/.ssh/vagrant vagrant@#{ip} 'cat /etc/issue'"
 
 			begin
 				status = spawn command, 'stdout' => b_stdout, 'stderr' => b_stderr
