@@ -73,6 +73,7 @@ class Central
     rsugar["website"] = sugaraccount.website
     rsugar["services"] = sugaraccount.account_services_c
     contactcount = 0
+    emailcount = 0
     test = Hash.new
     sugaraccount.contacts.each do |contact|
       rsugarcontact["first_name#{contactcount}"] = ["#{contact.first_name}"]
@@ -86,6 +87,8 @@ class Central
       end
       contactcount = contactcount+1
     end
+    rsugarcontact["contactcount"] = contactcount-1
+    rsugarcontact["emailcount"] = emailcount-1
 
     #RETURN INFO
     return raccount, rparent, rsugar, rsugarcontact
