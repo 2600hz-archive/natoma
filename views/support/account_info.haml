@@ -1,4 +1,4 @@
-%h1 Account Info 
+%h2 Account Info 
 %p
   Name: #{@foo["name"]}
 %p
@@ -7,17 +7,24 @@
   Realm: #{@foo["realm"]}
 %p
   Role: #{@foo["role"]}
+
+%h2 Parent Info
 %p
-  Parent Name: #{@bar["name0"]}
-%p
-  Parent Id: #{@bar["id0"]}
-%p
-  Parent Realm: #{@bar["realm0"]}
-%p
-  Parent Role: #{@bar["role0"]}
+- (0..@foo["parentcount"]).each do |i|
+  Parent Name: #{@bar["name#{i}"]}
+  %br/
+  Parent Id: #{@bar["id#{i}"]}
+  %br/
+  Parent Realm: #{@bar["realm#{i}"]}
+  %br/
+  Parent Role: #{@bar["role#{i}"]}
+  %br/
+
+%h2 SugarCRM Info
 %p
   Sugar Description: #{@meow["description"]}
 %p
   Sugar Website: #{@meow["website"]}
 %p
   Sugar Services: #{@meow["services"]}
+
