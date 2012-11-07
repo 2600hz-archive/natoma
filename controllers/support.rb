@@ -11,9 +11,13 @@ class Central
 	end
 
 	post '/numbersearch' do
-		@foo = Numsearch.new.lookup(params[:number])
-		session[:foo1] = @foo
-		@foo.each {|k,v| puts "#{k} **************************  #{v}"}
-		redirect to('/account_info')
+		@foo, @bar, @meow, @mix = Numsearch.new.lookup(params[:number])
+		#session[:foo1] = @foo
+		#@foo.each {|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		#@bar.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		#@meow.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		@mix.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		#redirect to('/account_info')
+		haml 'support/account_info', :locals => { :foo => @foo , :bar => @bar , :meow => @meow , :mix => @mix}
 	end
 end
