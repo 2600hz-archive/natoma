@@ -54,6 +54,7 @@ class Central
     raccount["name"] = accparse["name"]
     raccount["role"] = accparse["role"]
     raccount["realm"] = accparse["realm"]
+    raccount["parentcount"] = accparse["pvt_tree"].length-1
     #LOOP TO GET INFO OF EACH PARENT ACCOUNT
     for i in 0..accparse["pvt_tree"].length-1
       parentid = accparse["pvt_tree"][i]
