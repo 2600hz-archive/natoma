@@ -2,7 +2,7 @@ class Central
   class Numsearch
 
     def lookup(query)
-    #Set up
+    #SET UP
     bigcouchurl = "http://10.10.3.61:5984"
     raccount = Hash.new
     rparent = Hash.new
@@ -86,18 +86,9 @@ class Central
       contactcount = contactcount+1
     end
 
-    puts rsugarcontact["email_address0;0"]
     #RETURN INFO
-    p "###################"
-    puts raccount
-    p "###################"
-    p rparent
-    p "###################"
-    p rsugar
-    p "###################"
-    p rsugarcontact
-    p "###################"
     return raccount, rparent, rsugar, rsugarcontact
+    #return raccount
 
     end
 
