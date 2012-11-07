@@ -16,7 +16,7 @@ class Central
 		#@foo.each {|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
 		#@bar.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
 		#@meow.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
-		@mix.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		#@mix.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
 		#redirect to('/account_info')
 		haml 'support/account_info', :locals => { :foo => @foo , :bar => @bar , :meow => @meow , :mix => @mix}
 	end

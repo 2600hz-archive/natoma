@@ -1,11 +1,11 @@
 %h2 Account Info 
 %p
   Name: #{@foo["name"]}
-%p
+  %br/
   Id: #{@foo["id"]}
-%p
+  %br/
   Realm: #{@foo["realm"]}
-%p
+  %br/
   Role: #{@foo["role"]}
 
 %h2 Parent Info
@@ -19,12 +19,25 @@
   %br/
   Parent Role: #{@bar["role#{i}"]}
   %br/
+  %br/
 
 %h2 SugarCRM Info
 %p
   Sugar Description: #{@meow["description"]}
-%p
+  %br/
   Sugar Website: #{@meow["website"]}
-%p
+  %br/
   Sugar Services: #{@meow["services"]}
-
+  %br/
+  %br/
+  - (0..@mix["contactcount"]).each do |i|
+    Contact: #{@mix["first_name#{i}"]} #{@mix["last_name#{i}"]}
+    %br/
+    Title: #{@mix["title#{i}"]}
+    %br/
+    Phone: #{@mix["phone_work#{i}"]}
+    %br/
+    - (0..@mix["emailcount"]).each do |k|
+      Email: #{@mix["email_address#{i};#{k}"]}
+      %br/
+      %br/
