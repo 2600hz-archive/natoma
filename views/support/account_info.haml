@@ -23,11 +23,11 @@
 
 %h2 SugarCRM Info
 %p
-  Sugar Description: #{@meow["description"]}
+  Description: #{@meow["description"]}
   %br/
-  Sugar Website: #{@meow["website"]}
+  Website: #{@meow["website"]}
   %br/
-  Sugar Services: #{@meow["services"]}
+  Services: #{@meow["services"]}
   %br/
   %br/
   - (0..@mix["contactcount"]).each do |i|
@@ -41,3 +41,14 @@
       Email: #{@mix["email_address#{i};#{k}"]}
       %br/
       %br/
+
+%h2 Zendesk Info
+%p
+- (0..@zen["ticketcount"]).each do |i|
+  #{@zen["#{i};subject"]}
+  %br/
+  Last update: #{@zen["#{i};updated_at"]}
+  %br/
+  %a{:href => "#{@zen["#{i};url"]}"} Ticket # #{@zen["#{i};id"]}
+  %br/
+  %br/
