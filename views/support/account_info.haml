@@ -1,54 +1,52 @@
 %h2 Account Info 
 %p
-  Name: #{@foo["name"]}
+  Name: #{@raccount["name"]}
   %br/
-  Id: #{@foo["id"]}
+  Id: #{@raccount["id"]}
   %br/
-  Realm: #{@foo["realm"]}
+  Realm: #{@raccount["realm"]}
   %br/
-  Role: #{@foo["role"]}
+  Role: #{@raccount["role"]}
 
 %h2 Parent Info
 %p
-- (0..@foo["parentcount"]).each do |i|
-  Parent Name: #{@bar["name#{i}"]}
+- @raccount["parentcount"].downto(0) do |i|
+  Parent Name: #{@rparent["name#{i}"]}
   %br/
-  Parent Id: #{@bar["id#{i}"]}
+  Parent Id: #{@rparent["id#{i}"]}
   %br/
-  Parent Realm: #{@bar["realm#{i}"]}
+  Parent Realm: #{@rparent["realm#{i}"]}
   %br/
-  Parent Role: #{@bar["role#{i}"]}
+  Parent Role: #{@rparent["role#{i}"]}
   %br/
   %br/
 
 %h2 SugarCRM Info
 %p
-  Description: #{@meow["description"]}
+  Description: #{@rsugar["description"]}
   %br/
-  Website: #{@meow["website"]}
+  Website: #{@rsugar["website"]}
   %br/
-  Services: #{@meow["services"]}
+  Services: #{@rsugar["services"]}
   %br/
   %br/
-  - (0..@mix["contactcount"]).each do |i|
-    Contact: #{@mix["first_name#{i}"]} #{@mix["last_name#{i}"]}
+  - (0..@rsugarcontact["contactcount"]).each do |i|
+    Contact: #{@rsugarcontact["first_name#{i}"]} #{@rsugarcontact["last_name#{i}"]}
     %br/
-    Title: #{@mix["title#{i}"]}
+    Title: #{@rsugarcontact["title#{i}"]}
     %br/
-    Phone: #{@mix["phone_work#{i}"]}
+    Phone: #{@rsugarcontact["phone_work#{i}"]}
     %br/
-    - (0..@mix["emailcount"]).each do |k|
-      Email: #{@mix["email_address#{i};#{k}"]}
+    - (0..@rsugarcontact["emailcount"]).each do |k|
+      Email: #{@rsugarcontact["email_address#{i};#{k}"]}
       %br/
       %br/
 
-%h2 Zendesk Info
+%h2 (#{@rticket["ticketcount"]+1}) New or Open Tickets
 %p
-- (0..@zen["ticketcount"]).each do |i|
-  #{@zen["#{i};subject"]}
+- @rticket["ticketcount"].downto(0) do |i|
+  %a{:href => "#{@rticket["#{i};url"]}", :target => "_blank"} #{@rticket["#{i};id"]}: #{@rticket["#{i};subject"]}
   %br/
-  Last update: #{@zen["#{i};updated_at"]}
-  %br/
-  %a{:href => "#{@zen["#{i};url"]}"} Ticket # #{@zen["#{i};id"]}
+  Last update: #{@rticket["#{i};updated_at"]}
   %br/
   %br/

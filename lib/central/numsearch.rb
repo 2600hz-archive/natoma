@@ -109,7 +109,7 @@ class Central
       query = client.tickets(:organization_id => "#{@orgid}")
       counter = 0
       query.each do |ticket|
-        if (ticket.status == "open")
+        if (ticket.status == "open" or ticket.status == "new")
           rticket["#{counter};id"] = ticket.id
           rticket["#{counter};subject"] = ticket.subject
           rticket["#{counter};url"] = "http://***REMOVED***/tickets/#{ticket.id}"
