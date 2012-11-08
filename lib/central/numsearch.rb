@@ -8,6 +8,7 @@ class Central
     rparent = Hash.new
     rsugar = Hash.new
     rsugarcontact = Hash.new
+    rticket = Hash.new
 
     if query.match(/[a-z]/)
       #SEARCH BY ACCOUNT NAME
@@ -90,8 +91,36 @@ class Central
     rsugarcontact["contactcount"] = contactcount-1
     rsugarcontact["emailcount"] = emailcount-1
 
+
+    #ZENDESK INFO GET
+      client = ZendeskAPI::Client.new do |config|
+        config.url = "https://2600hz.zendesk.com/api/v2"
+        config.username = "alerts@2600hz.com"
+        config.password = "Fun1234!"
+      end
+
+      orgsearch = client.organization()
+      orgsearch.each do |org|
+        if (org.name == "Comtel Connect")
+          @orgid = org.id
+        end
+      end
+
+      query = client.tickets(:organization_id => "#{@orgid}")
+      counter = 0
+      query.each do |ticket|
+        if (ticket.status == "open")
+          rticket["#{counter};id"] = ticket.id
+          rticket["#{counter};subject"] = ticket.subject
+          rticket["#{counter};url"] = "http://help.2600hz.com/tickets/#{ticket.id}"
+          rticket["#{counter};updated_at"] = ticket.updated_at
+          counter = counter+1
+        end
+      end
+      rticket["ticketcount"] = counter-1
+
     #RETURN INFO
-    return raccount, rparent, rsugar, rsugarcontact
+    return raccount, rparent, rsugar, rsugarcontact, rticket
     #return raccount
 
     end
