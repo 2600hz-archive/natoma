@@ -4,7 +4,7 @@
 	%tr{:align => "left"}
 		%th Lookup a Number
 		%th Verify a Number
-		%th Buy a Number
+		%th Account Lookup
 	%tr
 		%td
 			%span= @environment.clusters.size.to_s + " cluster(s)"
@@ -15,10 +15,26 @@
 		%td
 		%td
 			%form{ :action => "/numbersearch", :method => "post"}
-				Number 
+				Number or Account Name 
 				%input{:type => "text", :size => "20", :name => "number"}
-				%input{:type => "submit", :value => "Deploy", :class => "btn"}
+				%input{:type => "submit", :value => "Search", :class => "btn"}
+		%td
+			%form{ :action => "/nagios", :method => "post"}
+				Hostname:
+				%input{:type => "text", :size => "20", :name => "hostname"}
+				%br/
+				Start Time:
+				%input{:type => "text", :size => "20", :name => "starttime"}
+				%br/
+				Duration:
+				%input{:type => "text", :size => "20", :name => "duration"}
+				%br/
+				Comment:
+				%input{:type => "text", :size => "20", :name => "comment"}
+				%input{:type => "submit", :value => "Submit", :class => "btn"}
+
 	%tr{:align => "left"}
 		%th Debug Logs
 		%th Trace a Call
 		%th Find an Account
+
