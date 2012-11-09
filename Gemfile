@@ -23,6 +23,7 @@ gem "SystemTimer", :platforms => :ruby_18 # only install SystemTimer on 1.8.7
 gem "open4"
 gem "resque-batched-job"
 gem "sugarcrm"
+gem "zendesk_api"
 
 group :production do
   gem 'pony'
