@@ -2,12 +2,13 @@ class Central
   class Numsearch
 
     def lookup(query)
-    #Set up
+    #SET UP
     bigcouchurl = "http://10.10.3.61:5984"
     raccount = Hash.new
     rparent = Hash.new
     rsugar = Hash.new
     rsugarcontact = Hash.new
+    rticket = Hash.new
 
     if query.match(/[a-z]/)
       #SEARCH BY ACCOUNT NAME
@@ -54,6 +55,7 @@ class Central
     raccount["name"] = accparse["name"]
     raccount["role"] = accparse["role"]
     raccount["realm"] = accparse["realm"]
+    raccount["parentcount"] = accparse["pvt_tree"].length-1
     #LOOP TO GET INFO OF EACH PARENT ACCOUNT
     for i in 0..accparse["pvt_tree"].length-1
       parentid = accparse["pvt_tree"][i]
@@ -72,6 +74,7 @@ class Central
     rsugar["website"] = sugaraccount.website
     rsugar["services"] = sugaraccount.account_services_c
     contactcount = 0
+    emailcount = 0
     test = Hash.new
     sugaraccount.contacts.each do |contact|
       rsugarcontact["first_name#{contactcount}"] = ["#{contact.first_name}"]
@@ -85,19 +88,40 @@ class Central
       end
       contactcount = contactcount+1
     end
+    rsugarcontact["contactcount"] = contactcount-1
+    rsugarcontact["emailcount"] = emailcount-1
 
-    puts rsugarcontact["email_address0;0"]
+
+    #ZENDESK INFO GET
+      client = ZendeskAPI::Client.new do |config|
+        config.url = "https://***REMOVED***/api/v2"
+        config.username = "***REMOVED***"
+        config.password = "***REMOVED***"
+      end
+
+      orgsearch = client.organization()
+      orgsearch.each do |org|
+        if (org.name == "Comtel Connect")
+          @orgid = org.id
+        end
+      end
+
+      query = client.tickets(:organization_id => "#{@orgid}")
+      counter = 0
+      query.each do |ticket|
+        if (ticket.status == "open" or ticket.status == "new")
+          rticket["#{counter};id"] = ticket.id
+          rticket["#{counter};subject"] = ticket.subject
+          rticket["#{counter};url"] = "http://***REMOVED***/tickets/#{ticket.id}"
+          rticket["#{counter};updated_at"] = ticket.updated_at
+          counter = counter+1
+        end
+      end
+      rticket["ticketcount"] = counter-1
+
     #RETURN INFO
-    p "###################"
-    puts raccount
-    p "###################"
-    p rparent
-    p "###################"
-    p rsugar
-    p "###################"
-    p rsugarcontact
-    p "###################"
-    return raccount, rparent, rsugar, rsugarcontact
+    return raccount, rparent, rsugar, rsugarcontact, rticket
+    #return raccount
 
     end
 
