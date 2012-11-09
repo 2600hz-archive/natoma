@@ -1,1 +1,56 @@
-%h1 Account Info
+%h2 Account Info 
+%p
+  Name: #{@raccount["name"]}
+  %br/
+  Id: #{@raccount["id"]}
+  %br/
+  Realm: #{@raccount["realm"]}
+  %br/
+  Role: #{@raccount["role"]}
+
+%h2 Parent Info
+%p
+- @raccount["parentcount"].downto(0) do |i|
+  Parent Name: #{@rparent["name#{i}"]}
+  %br/
+  Parent Id: #{@rparent["id#{i}"]}
+  %br/
+  Parent Realm: #{@rparent["realm#{i}"]}
+  %br/
+  Parent Role: #{@rparent["role#{i}"]}
+  %br/
+  %br/
+
+%h2 SugarCRM Info
+%p
+- if @rsugar["services"].nil? and @rsugar["website"].nil?
+  No SugarCRM Account Found
+  %br/
+- else
+  Description: #{@rsugar["description"]}
+  %br/
+  Website: #{@rsugar["website"]}
+  %br/
+  Services: #{@rsugar["services"]}
+  %br/
+  %br/
+  - (0..@rsugarcontact["contactcount"]).each do |i|
+    Contact: #{@rsugarcontact["first_name#{i}"]} #{@rsugarcontact["last_name#{i}"]}
+    %br/
+    Title: #{@rsugarcontact["title#{i}"]}
+    %br/
+    Phone: #{@rsugarcontact["phone_work#{i}"]}
+    %br/
+    - (0..@rsugarcontact["emailcount"]).each do |k|
+      Email: #{@rsugarcontact["email_address#{i};#{k}"]}
+      %br/
+      %br/
+
+%h2 (#{@rticket["ticketcount"]+1}) New or Open Tickets
+%p
+- @rticket["ticketcount"].downto(0) do |i|
+  %a{:href => "#{@rticket["#{i};url"]}", :target => "_blank"} #{@rticket["#{i};id"]}: #{@rticket["#{i};subject"]}
+  %br/
+  Last update: #{@rticket["#{i};updated_at"]}
+  %br/
+  %br/
