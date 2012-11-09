@@ -11,9 +11,22 @@ class Central
 	end
 
 	post '/numbersearch' do
-		@foo = Numsearch.new.lookup(params[:number])
-		session[:foo1] = @foo
-		@foo.each {|k,v| puts "#{k} **************************  #{v}"}
-		redirect to('/account_info')
+		@raccount, @rparent, @rsugar, @rsugarcontact, @rticket = Numsearch.new.lookup(params[:number])
+		#session[:foo1] = @foo
+		#@foo.each {|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		#@bar.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		#@meow.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		#@mix.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
+		#redirect to('/account_info')
+		haml 'support/account_info', :locals => { :raccount => @raccount , :rparent => @rparent , :rsugar => @rsugar , :rsugarcontact => @rsugarcontact , :rticket => @rticket}
+	end
+
+	post '/nagios' do
+		@result = Nagios.new.set(params[:hostname], params[:starttime], params[:duration], params[:comment])
+		haml 'support/nagios_info', :locals => { :result => @result}
+	end
+
+	get '/nagios_info' do
+		haml 'support/nagios_info', :locals => { :session => session }
 	end
 end
