@@ -23,6 +23,10 @@
 
 %h2 SugarCRM Info
 %p
+- if @rsugar["services"].nil? and @rsugar["website"].nil?
+  No SugarCRM Account Found
+  %br/
+- else
   Description: #{@rsugar["description"]}
   %br/
   Website: #{@rsugar["website"]}
