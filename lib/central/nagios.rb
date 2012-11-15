@@ -2,14 +2,14 @@ class Central
   class Nagios
 
     def set(hostname, starttime, duration, comment)
-      puts Central.redis.hget "nagios_downtime", "field"
+      time = Time.now
       dt_inc = Central.redis.hget "nagios_downtime", "field"
       Central.redis.hset "nagios_downtime", "#{dt_inc}::hostname", "#{hostname}"
       Central.redis.hset "nagios_downtime", "#{dt_inc}::starttime", "#{starttime}"
       Central.redis.hset "nagios_downtime", "#{dt_inc}::duration", "#{duration}"
       Central.redis.hset "nagios_downtime", "#{dt_inc}::comment", "#{comment}"
+      Central.redis.hset "nagios_downtime", "#{dt_inc}::time", "#{time}"
       Central.redis.hincrby "nagios_downtime", "field", 1
-      puts Central.redis.hget "nagios_downtime", "field"
 
       rnagios = Hash.new
       commandfile = '/usr/local/nagios/var/rw/nagios.cmd'
@@ -17,7 +17,7 @@ class Central
       now = Time.now
       $endtime = starttime.to_i+duration.to_i
       #cmd = '/usr/bin/printf "[%lu] SCHEDULE_HOST_DOWNTIME;#{hostname};#{starttime};#{$endtime};0;0;#{duration};RemoteSinatra;#{comment}" #{now} > #{commandfile}'
-      cmd = "/root/test.sh #{hostname} #{starttime} #{duration} #{comment}"
+      cmd = "/root/test.sh #{hostname} #{starttime} #{duration} '#{comment}'"
       ip = "192.168.1.103"
       queue(debug, cmd, ip)
       return rnagios
