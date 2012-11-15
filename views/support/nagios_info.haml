@@ -1,3 +1,15 @@
 %h2 Nagios Info
 %p
-  #{@result["test"]}
+- count = Central.redis.hget "nagios_downtime", "field"
+%p
+- (0..50).each do |i|
+  #{i}
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::hostname"
+  #{printer}
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::starttime"
+  #{printer}
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::duration"
+  #{printer}
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::comment"
+  #{printer}
+  %br/

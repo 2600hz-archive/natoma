@@ -2,6 +2,15 @@ class Central
   class Nagios
 
     def set(hostname, starttime, duration, comment)
+      puts Central.redis.hget "nagios_downtime", "field"
+      dt_inc = Central.redis.hget "nagios_downtime", "field"
+      Central.redis.hset "nagios_downtime", "#{dt_inc}::hostname", "#{hostname}"
+      Central.redis.hset "nagios_downtime", "#{dt_inc}::starttime", "#{starttime}"
+      Central.redis.hset "nagios_downtime", "#{dt_inc}::duration", "#{duration}"
+      Central.redis.hset "nagios_downtime", "#{dt_inc}::comment", "#{comment}"
+      Central.redis.hincrby "nagios_downtime", "field", 1
+      puts Central.redis.hget "nagios_downtime", "field"
+
       rnagios = Hash.new
       commandfile = '/usr/local/nagios/var/rw/nagios.cmd'
       debug = "Setting host downtime for #{hostname}"
