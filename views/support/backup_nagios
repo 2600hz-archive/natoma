@@ -1,0 +1,44 @@
+%h2 Downtime Requests
+%p
+- ((Central.redis.hget "nagios_downtime", "field").to_i-1).downto(0) do |i|
+  #{i}:
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::hostname"
+  %a{:href => "http://192.168.1.103/nagios/cgi-bin/extinfo.cgi?type=1&host=#{printer}", :target => "_blank"} #{printer}
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::starttime"
+  #{printer}
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::duration"
+  #{printer}
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::comment"
+  #{printer}
+  - printer = Central.redis.hget "nagios_downtime", "#{i}::time"
+  #{printer}
+  %br/
+%h2 Test Space
+%table{:border => "1"}
+  %tr
+    %th ID
+    %th Hostname
+    %th Start Time
+    %th Duration
+    %th Comment
+    %th Time
+  - ((Central.redis.hget "nagios_downtime", "field").to_i-1).downto(0) do |i|
+    %tr
+      %td
+        #{i}
+      %td
+        - printer = Central.redis.hget "nagios_downtime", "#{i}::hostname"
+        %a{:href => "http://192.168.1.103/nagios/cgi-bin/extinfo.cgi?type=1&host=#{printer}", :target => "_blank"} #{printer}
+      %td
+        - printer = Central.redis.hget "nagios_downtime", "#{i}::starttime"
+        #{printer}
+      %td
+        - printer = Central.redis.hget "nagios_downtime", "#{i}::duration"
+        #{printer}
+      %td
+        - printer = Central.redis.hget "nagios_downtime", "#{i}::comment"
+        #{printer}
+      %td
+        - printer = Central.redis.hget "nagios_downtime", "#{i}::time"
+        #{printer}
+
