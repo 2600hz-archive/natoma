@@ -2,13 +2,8 @@ class Central
   class Nagiostest
 
     def set(hostname, duration, comment, month, day, year, hour, minute)
-      puts "#{hostname}, #{duration}, #{comment}, #{month}, #{day}, #{year}, #{hour}, #{minute}"
       starttime = Date.new(year.to_i,month.to_i,day.to_i).to_time.to_i
-      puts "STARTTIME: #{starttime}"
-      puts hour.to_i*3600
-      puts minute.to_i*60
       starttime = starttime+(hour.to_i*3600)+(minute.to_i*60)
-      puts "MODIFIED STARTTIME: #{starttime}"
       time = Time.now
       dt_inc = Central.redis.hget "nagios_downtime", "field"
       Central.redis.hset "nagios_downtime", "#{dt_inc}::hostname", "#{hostname}"
@@ -18,6 +13,41 @@ class Central
       Central.redis.hset "nagios_downtime", "#{dt_inc}::time", "#{time}"
       Central.redis.hincrby "nagios_downtime", "field", 1
 
+      if (month == "1")
+        namemonth = "jan"
+      elsif (month == "2")
+        namemonth = "feb"
+      elsif (month == "3")
+        namemonth = "mar"
+      elsif (month == "4")
+        namemonth = "apr"
+      elsif (month == "5")
+        namemonth = "may"
+      elsif (month == "6")
+        namemonth = "jun"
+      elsif (month == "7")
+        namemonth = "jul"
+      elsif (month == "8")
+        namemonth = "aug"
+      elsif (month == "9")
+        namemonth = "sep"
+      elsif (month == "10")
+        namemonth = "oct"
+      elsif (month == "11")
+        namemonth = "nov"
+      elsif (month == "12")
+        namemonth = "dec"
+      end
+      if (minute.to_i < 10)
+        modmin = "0#{minute}"
+      else
+        modmin = minute
+      end
+      emailsubject = "Host Downtime for: #{hostname}"
+      emailbody = "#{hostname} is undergoing a scheduled downtime due to: #{comment}.\nThis downtime will last for #{duration} seconds."
+      addresses = "jeremy.ai@gmail.com"
+      command = "echo 'echo #{emailbody} | mail -s \"#{emailsubject}\" #{addresses}' | at #{hour}:#{modmin} #{namemonth} #{day} #{year}"
+      system(command)
 
       rnagios = Hash.new
       commandfile = '/usr/local/nagios/var/rw/nagios.cmd'
