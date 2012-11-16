@@ -1,6 +1,6 @@
 %h1 Support
 
-%table{:border => 0, :width => "100%"}
+%table{:border => 1, :width => "100%"}
 	%tr{:align => "left"}
 		%th Lookup a Number
 		%th Verify a Number
@@ -41,3 +41,20 @@
 				%input{:type => "text", :size => "10", :name => "comment"}
 				%input{:type => "submit", :value => "Submit", :class => "btn"}
 
+	%tr{:align => "left"}
+		%th placeholder 1
+		%th placeholder 2
+		%th Test Nagios Form DO NOT USE
+	%tr
+		%td
+		%td
+		%td
+			%form{ :action => "/nagiostest", :method => "post"}
+				Hostname: 
+				%input{:type => "text", :size => "10", :name => "hostname"}
+				Duration: 
+				%input{:type => "text", :size => "10", :name => "duration"}
+				Comment: 
+				%input{:type => "text", :size => "10", :name => "comment"}
+				= partial "forms/nagiostest"
+				%input{:type => "submit", :value => "submit", :class => "btn"}
