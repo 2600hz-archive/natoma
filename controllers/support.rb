@@ -12,12 +12,6 @@ class Central
 
 	post '/numbersearch' do
 		@raccount, @rparent, @rsugar, @rsugarcontact, @rticket = Numsearch.new.lookup(params[:number])
-		#session[:foo1] = @foo
-		#@foo.each {|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
-		#@bar.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
-		#@meow.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
-		#@mix.each{|k,v| puts "KEY:#{k}\nVALUE:#{v}\n\n\n"}
-		#redirect to('/account_info')
 		haml 'support/account_info', :locals => { :raccount => @raccount , :rparent => @rparent , :rsugar => @rsugar , :rsugarcontact => @rsugarcontact , :rticket => @rticket}
 	end
 
@@ -28,5 +22,14 @@ class Central
 
 	get '/nagios_info' do
 		haml 'support/nagios_info', :locals => { :session => session }
+	end
+
+	post '/nagiostest' do
+		@result = Nagiostest.new.set(params[:hostname], params[:duration], params[:comment], params[:month], params[:day], params[:year], params[:hour], params[:minute])
+		haml 'support/nagiostest_info', :locals => { :result => @result}
+	end
+
+	get '/nagiostest_info' do
+		haml 'support/nagiostest_info', :locals => { :session => session }
 	end
 end
