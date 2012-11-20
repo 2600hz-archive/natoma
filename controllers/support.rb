@@ -16,20 +16,11 @@ class Central
 	end
 
 	post '/nagios' do
-		@result = Nagios.new.set(params[:hostname], params[:starttime], params[:duration], params[:comment])
+		@result = Nagios.new.set(params[:hostname], params[:duration_hour], params[:duration_minute], params[:comment], params[:month], params[:day], params[:year], params[:hour], params[:minute])
 		haml 'support/nagios_info', :locals => { :result => @result}
 	end
 
 	get '/nagios_info' do
 		haml 'support/nagios_info', :locals => { :session => session }
-	end
-
-	post '/nagiostest' do
-		@result = Nagiostest.new.set(params[:hostname], params[:duration], params[:comment], params[:month], params[:day], params[:year], params[:hour], params[:minute])
-		haml 'support/nagiostest_info', :locals => { :result => @result}
-	end
-
-	get '/nagiostest_info' do
-		haml 'support/nagiostest_info', :locals => { :session => session }
 	end
 end
