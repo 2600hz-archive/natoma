@@ -1,0 +1,35 @@
+.input
+  %label{:for => "month"} Month
+  %select{:name => "month"}
+    %option{:value => "jan"} Jan
+    %option{:value => "feb"} Feb
+    %option{:value => "mar"} Mar
+    %option{:value => "apr"} Apr
+    %option{:value => "may"} May
+    %option{:value => "Jun"} Jun
+    %option{:value => "jul"} Jul
+    %option{:value => "aug"} Aug
+    %option{:value => "sep"} Sep
+    %option{:value => "oct"} Oct
+    %option{:value => "nov"} Nov
+    %option{:value => "dec"} Dec
+.input
+  %label{:for => "day"} Day
+  %select{:name => "day"}
+    - 1.upto 31 do |n|
+      %option{:value => n}= "%02d" % n
+.input
+  %label{:for => "year"} Year
+  %select{:name => "year"}
+    - 2012.upto 2024 do |n|
+      %option{:value => n}= "%02d" % n
+.input
+  %label{:for => "hour"} Hour
+  %select{:name => "hour"}
+    - 0.upto 23 do |n|
+      %option{:value => n}= "%02d" % n
+.input
+  %label{:for => "minute"} Minute
+  %select{:name => "minute"}
+    - 0.upto 59 do |n|
+      %option{:value => n}= "%02d" % n

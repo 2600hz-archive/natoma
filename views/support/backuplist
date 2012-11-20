@@ -30,6 +30,28 @@
 		%td
 		%td
 			%form{ :action => "/nagios", :method => "post"}
+				Hostname:
+				%input{:type => "text", :size => "10", :name => "hostname"}
+				Start Time:
+				%input{:type => "text", :size => "10", :name => "starttime"}
+				%br/
+				Duration:
+				%input{:type => "text", :size => "10", :name => "duration"}
+				Comment:
+				%input{:type => "text", :size => "10", :name => "comment"}
+				%input{:type => "submit", :value => "Submit", :class => "btn"}
+
+	%tr{:align => "left"}
+		%th placeholder 1
+		%th placeholder 2
+		%th
+			Set Nagios Downtime or
+			%a{:href => "/nagios_info"} List Downtime Requests
+	%tr
+		%td
+		%td
+		%td
+			%form{ :action => "/nagios", :method => "post"}
 				Hostname: 
 				%input{:type => "text", :size => "10", :name => "hostname"}
 				Duration (Hours): 
