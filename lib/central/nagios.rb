@@ -1,42 +1,39 @@
 #TO-DO LIST
-#Send an email on downtimeCHECKAL
-#Read email addresses from a fileAL
-#Do not allow setting downtime for past dates
-#Pre-Set Start time to 1 hour from now on form
+#Read email addresses from a file
 class Central
   class Nagios
 
     def set(hostname, duration_hour, duration_minute, comment, month, day, year, hour, minute)
-      #Translate month to number
-      if (month == "jan")
-        nummonth = "1"
-      elsif (month == "feb")
-        nummonth = "2"
-      elsif (month == "mar")
-        nummonth = "3"
-      elsif (month == "apr")
-        nummonth = "4"
-      elsif (month == "may")
-        nummonth = "5"
-      elsif (month == "jun")
-        nummonth = "6"
-      elsif (month == "jul")
-        nummonth = "7"
-      elsif (month == "aug")
-        nummonth = "8"
-      elsif (month == "sep")
-        nummonth = "9"
-      elsif (month == "oct")
-        nummonth = "10"
-      elsif (month == "nov")
-        nummonth = "11"
-      elsif (month == "dec")
-        nummonth = "12"
+      #Translate month to month shorthand name
+      if (month == "1")
+        namemonth = "jan"
+      elsif (month == "2")
+        namemonth = "feb"
+      elsif (month == "3")
+        namemonth = "mar"
+      elsif (month == "4")
+        namemonth = "apr"
+      elsif (month == "5")
+        namemonth = "may"
+      elsif (month == "6")
+        namemonth = "jun"
+      elsif (month == "7")
+        namemonth = "jul"
+      elsif (month == "8")
+        namemonth = "aug"
+      elsif (month == "9")
+        namemonth = "sep"
+      elsif (month == "10")
+        namemonth = "oct"
+      elsif (month == "11")
+        namemonth = "nov"
+      elsif (month == "12")
+        namemonth = "dec"
       end
       #Convert duration from hours/minutes to seconds
       duration = (duration_hour.to_i*3600)+(duration_minute.to_i*60)
       #Set starttime to Unix Time
-      starttime = Date.new(year.to_i,nummonth.to_i,day.to_i).to_time.to_i
+      starttime = Date.new(year.to_i,month.to_i,day.to_i).to_time.to_i
       starttime = starttime+(hour.to_i*3600)+(minute.to_i*60)
       #Set time to when downtime requested
       time = Time.now
@@ -57,12 +54,13 @@ class Central
       end
       #Set variables to emailing info
       emailsubject = "Host Downtime for: #{hostname}"
-      emailbody = "#{hostname} is undergoing a scheduled downtime due to: #{comment}.\nThis downtime will last for #{duration} seconds."
+      emailbody = "\"#{hostname} is undergoing a scheduled downtime due to: #{comment}. This downtime will last for #{duration_hour} hour(s), #{duration_minute} minute(s).\""
       addresses = "jeremy.ai@2600hz.com"
       #Run at command to set an email stak
-      command = "echo 'echo #{emailbody} | mail -s \"#{emailsubject}\" #{addresses}' | at #{hour}:#{modmin} #{month} #{day} #{year}"
+      command = "echo 'echo #{emailbody} | mail -s \"#{emailsubject}\" #{addresses}' | at #{hour}:#{modmin} #{namemonth} #{day} #{year}"
       system(command)
 
+      puts "*****************************\n#{command}\n************************************"
       #Create rnagios hash to return info (OBSOLETE)
       rnagios = Hash.new
       commandfile = '/usr/local/nagios/var/rw/nagios.cmd'
