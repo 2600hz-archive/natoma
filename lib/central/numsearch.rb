@@ -3,7 +3,7 @@ class Central
 
     def lookup(query)
     #SET UP
-    bigcouchurl = "http://10.10.3.61:5984"
+    bigcouchurl = "http://184.106.180.226:15984"
     raccount = Hash.new
     rparent = Hash.new
     rsugar = Hash.new
@@ -12,6 +12,8 @@ class Central
 
     if query.match(/[a-z]/)
       #SEARCH BY ACCOUNT NAME
+      query = query.gsub(/\s+/, "")
+      query = query.downcase
       namesearchraw = `curl -sS "#{bigcouchurl}/accounts/_design/accounts/_view/listing_by_name"`
       namesearchparse = JSON.parse(namesearchraw)
       rows = namesearchparse["rows"]
@@ -43,10 +45,16 @@ class Central
       if (numparse["pvt_assigned_to"] != nil)
         accountid = numparse["pvt_assigned_to"]
       else
-        puts "Number not assigned to an account"
-        exit
+        puts "Number not found or not assigned to an account"
       end
     end
+
+    #RETURN EMPTY HASHES IF NO ACCOUNT/NUMBER FOUND
+    if (accountid == nil)
+      return raccount, rparent, rsugar, rsugarcontact, rticket
+    end
+
+
 
     accraw = `curl -sS "#{bigcouchurl}/accounts/#{accountid}"`
     accparse = JSON.parse(accraw)
@@ -99,9 +107,10 @@ class Central
         config.password = "Fun1234!"
       end
 
+
       orgsearch = client.organization()
       orgsearch.each do |org|
-        if (org.name == "Comtel Connect")
+        if (org.external_id == accparse["_id"])
           @orgid = org.id
         end
       end
