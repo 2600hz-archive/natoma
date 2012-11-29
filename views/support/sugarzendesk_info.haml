@@ -29,7 +29,7 @@
 - if @rticket["0;url"].nil?
   No Zendesk Account Found
   %br/
-  %a{:href => "http://***REMOVED***/organizations", :target => "_blank"} Try Searching Here
+  %a{:href => "http://help.2600hz.com/organizations", :target => "_blank"} Try Searching Here
   %br/
 - @rticket["ticketcount"].downto(0) do |i|
   %a{:href => "#{@rticket["#{i};url"]}", :target => "_blank"} #{@rticket["#{i};id"]}: #{@rticket["#{i};subject"]}

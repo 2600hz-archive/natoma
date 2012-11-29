@@ -55,7 +55,7 @@ class Central
       #Set variables to emailing info
       emailsubject = "Host Downtime for: #{hostname}"
       emailbody = "\"#{hostname} is undergoing a scheduled downtime due to: #{comment}. This downtime will last for #{duration_hour} hour(s), #{duration_minute} minute(s).\""
-      addresses = "***REMOVED***.ai@2600hz.com"
+      addresses = "jeremy.ai@2600hz.com"
       #Run at command to set an email stak
       command = "echo 'echo #{emailbody} | mail -s \"#{emailsubject}\" #{addresses}' | at #{hour}:#{modmin} #{namemonth} #{day} #{year}"
       system(command)
