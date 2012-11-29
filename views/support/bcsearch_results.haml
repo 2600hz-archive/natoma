@@ -1,0 +1,20 @@
+- if (@search_results["query"] != nil)
+  %h2 Search Results for "#{@search_results["query"]}"
+  %p
+  - if (@search_results["error"] != nil)
+    #{@search_results["error"]}
+    %br/
+    %br/
+    %a{:href => "/support"} Search Again 
+    or
+  - elsif (@search_results["count"] == 0)
+    No accounts found in Bigcouch db.
+    %br/
+    %br/
+    %a{:href => "/support"} Search Again
+    or
+  - else
+    - 0.upto(@search_results["count"]) do |i|
+      %a{:href => "/support/bigcouch/#{@search_results["#{i};id"]}"} #{@search_results["#{i};key"]}
+      %br/
+  %a{:href => "/support/Sugar_Zendesk/#{@search_results["query"]}"} Search SugarCRM and Zendesk
