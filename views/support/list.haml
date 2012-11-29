@@ -1,6 +1,6 @@
 %h1 Support
 
-%table{:border => 0, :width => "100%"}
+%table{:border => 1, :width => "100%"}
 	%tr{:align => "left"}
 		%th Lookup a Number
 		%th Verify a Number
@@ -14,27 +14,29 @@
 						%a{:href => "/clusters/#{cluster.id}"}= cluster.props["name"]
 		%td
 		%td
-			%form{ :action => "/numbersearch", :method => "post"}
-				Number or Account Name 
-				%input{:type => "text", :size => "20", :name => "number"}
+			%form{ :action => "/support/bc_search", :method => "post"}
+				Number or Account Name
+				%input{:type => "text", :size => "20", :name => "query"}
 				%input{:type => "submit", :value => "Search", :class => "btn"}
-		%td
-			%form{ :action => "/nagios", :method => "post"}
-				Hostname:
-				%input{:type => "text", :size => "20", :name => "hostname"}
-				%br/
-				Start Time:
-				%input{:type => "text", :size => "20", :name => "starttime"}
-				%br/
-				Duration:
-				%input{:type => "text", :size => "20", :name => "duration"}
-				%br/
-				Comment:
-				%input{:type => "text", :size => "20", :name => "comment"}
-				%input{:type => "submit", :value => "Submit", :class => "btn"}
 
 	%tr{:align => "left"}
 		%th Debug Logs
 		%th Trace a Call
-		%th Find an Account
-
+		%th
+			Set Nagios Downtime or 
+			%a{:href => "/nagios_info"} List Downtime Requests
+	%tr
+		%td
+		%td
+		%td
+			%form{ :action => "/nagios", :method => "post"}
+				Hostname: 
+				%input{:type => "text", :size => "10", :name => "hostname"}
+				Duration (Hours): 
+				%input{:type => "text", :size => "10", :name => "duration_hour"}
+				Duration (Minutes):
+				%input{:type => "text", :size => "10", :name => "duration_minute"}
+				Comment: 
+				%input{:type => "text", :size => "10", :name => "comment"}
+				= partial "forms/nagios"
+				%input{:type => "submit", :value => "submit", :class => "btn"}

@@ -1,0 +1,40 @@
+.input
+  %label{:for => "month"} Month
+  %select{:name => "month"}
+    - 1.upto 12 do |n|
+      - if (n == Time.new.month)
+        %option{:value => n, :selected => "selected"}= "%02d" % n
+      - else
+        %option{:value => n}= "%02d" % n
+.input
+  %label{:for => "day"} Day
+  %select{:name => "day"}
+    - 1.upto 31 do |n|
+      - if (n == Time.new.day)
+        %option{:value => n, :selected => "selected"}= "%02d" % n
+      - else
+        %option{:value => n}= "%02d" % n
+.input
+  %label{:for => "year"} Year
+  %select{:name => "year"}
+    - 2012.upto 2024 do |n|
+      - if (n == Time.new.year)
+        %option{:value => n, :selected => "selected"}= "%02d" % n
+      - else
+        %option{:value => n}= "%02d" % n
+.input
+  %label{:for => "hour"} Hour
+  %select{:name => "hour"}
+    - 0.upto 23 do |n|
+      - if (n == Time.new.hour)
+        %option{:value => n, :selected => "selected"}= "%02d" % n
+      - else
+        %option{:value => n}= "%02d" % n
+.input
+  %label{:for => "minute"} Minute
+  %select{:name => "minute"}
+    - 0.upto 59 do |n|
+      - if (n == Time.new.min)
+        %option{:value => n, :selected => "selected"}= "%02d" % n
+      - else
+        %option{:value => n}= "%02d" % n

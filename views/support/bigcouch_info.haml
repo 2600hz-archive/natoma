@@ -1,4 +1,4 @@
-%h2 Account Info 
+%h2 Account Info
 %p
   Name: #{@raccount["name"]}
   %br/
@@ -7,11 +7,11 @@
   Realm: #{@raccount["realm"]}
   %br/
   Role: #{@raccount["role"]}
-
 %h2 Parent Info
 %p
-- @raccount["parentcount"].downto(0) do |i|
-  Parent Name: #{@rparent["name#{i}"]}
+- @raccount["parent_count"].downto(0) do |i|
+  Parent Name: 
+  %a{:href => "/support/bigcouch/#{@rparent["id#{i}"]}"} #{@rparent["name#{i}"]}
   %br/
   Parent Id: #{@rparent["id#{i}"]}
   %br/
@@ -25,6 +25,8 @@
 %p
 - if @rsugar["services"].nil? and @rsugar["website"].nil?
   No SugarCRM Account Found
+  %br/
+  %a{:href => "http://crm.2600hz.com:32950/sugar/index.php?action=ajaxui#ajaxUILoc=index.php%3Fmodule%3DAccounts%26action%3Dindex%26parentTab%3DSales", :target => "_blank"} Try Searching Here 
   %br/
 - else
   Description: #{@rsugar["description"]}
@@ -46,8 +48,14 @@
       %br/
       %br/
 
+
 %h2 (#{@rticket["ticketcount"]+1}) New or Open Tickets
 %p
+- if @rticket["0;url"].nil?
+  No Zendesk Account Found
+  %br/
+  %a{:href => "http://help.2600hz.com/organizations", :target => "_blank"} Try Searching Here
+  %br/
 - @rticket["ticketcount"].downto(0) do |i|
   %a{:href => "#{@rticket["#{i};url"]}", :target => "_blank"} #{@rticket["#{i};id"]}: #{@rticket["#{i};subject"]}
   %br/

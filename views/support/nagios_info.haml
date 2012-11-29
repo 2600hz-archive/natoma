@@ -1,3 +1,31 @@
-%h2 Nagios Info
+%h2
+  %a{:href => "http://192.168.1.103/nagios/cgi-bin/extinfo.cgi?type=6", :target => "_blank"} Nagios Downtime Requests
+%table{:border => "1"}
+  %tr
+    %th ID
+    %th Hostname
+    %th Start Time
+    %th Duration
+    %th Comment
+    %th Time
+  - ((Central.redis.hget "nagios_downtime", "field").to_i-1).downto(0) do |i|
+    %tr
+      %td
+        #{i}
+      %td
+        - printer = Central.redis.hget "nagios_downtime", "#{i}::hostname"
+        %a{:href => "http://192.168.1.103/nagios/cgi-bin/extinfo.cgi?type=1&host=#{printer}", :target => "_blank"} #{printer}
+      %td
+        - printer = Time.at((Central.redis.hget "nagios_downtime", "#{i}::starttime").to_i)
+        #{printer}
+      %td
+        - printer = Time.at((Central.redis.hget "nagios_downtime", "#{i}::duration").to_i).gmtime.strftime('%R:%S')
+        #{printer}
+      %td
+        - printer = Central.redis.hget "nagios_downtime", "#{i}::comment"
+        #{printer}
+      %td
+        - printer = Central.redis.hget "nagios_downtime", "#{i}::time"
+        #{printer}
 %p
-  #{@result["test"]}
+  Note: This list only includes requests made from this UI, and will list downtimes regardless of success/failure or deletion via the Nagios UI.
