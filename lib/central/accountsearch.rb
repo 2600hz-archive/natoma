@@ -89,7 +89,7 @@ class Central
       sugaraccount = crm::Account.find_by_name(query)
       rsugar["description"] = sugaraccount.description
       rsugar["website"] = sugaraccount.website
-      rsugar["services"] = sugaraccount.account_services_c
+      rsugar["services"] = (sugaraccount.account_services_c).gsub(/\^/, "")
       contactcount = 0
       emailcount = 0
       test = Hash.new
