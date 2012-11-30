@@ -67,7 +67,7 @@ class Central
   post '/node_edit' do
     node_id = params["node_id"]
     ip = params["ip"]
-    Central.redis.hmset "nodes::#{node_id}", "name", params["name"], "ip", params["ip"]
+    Central.redis.hmset "nodes::#{node_id}", "name", params["name"], "ip", params["ip"], "role", params["role"]
     redirect to("/nodes/#{node_id}")
   end
 end
