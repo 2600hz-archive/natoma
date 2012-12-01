@@ -32,7 +32,7 @@ class Central
     @crumbs << Central.crumb( "#{acct_name}", "/accounts/#{acct_id}")
     @crumbs << Central.crumb( "#{env_name}", "/environments/#{env_id}")
     @crumbs << Central.crumb( "#{cluster_name}", "/clusters/#{cluster_id}")
-    @active = Central.crumb(@environment.props["name"], request.path_info)
+    @active = Central.crumb(@zone.props["name"], request.path_info)
     haml "zones/show"
   end
 
