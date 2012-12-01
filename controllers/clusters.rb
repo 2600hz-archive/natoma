@@ -17,7 +17,6 @@ class Central
   end
 
   get '/clusters/:id/create_zone' do |id|
-    puts id
     @cluster_id = id
     haml "zones/create_zone"
   end
