@@ -23,7 +23,6 @@ class Central
     puts @environments
     @crumbs = []
     @crumbs << Central.crumb("Dashboard", "/")
-    @crumbs << Central.crumb("account", "/accounts")
     @active = Central.crumb(@account.props["name"], request.path_info)
     haml "accounts/show", :layout => :layout2
   end
