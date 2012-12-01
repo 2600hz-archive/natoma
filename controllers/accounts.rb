@@ -19,8 +19,6 @@ class Central
     pass if id == "create"
     @account = Account.new(id)
     @environments = Account.env_info(id)
-
-    puts @environments
     @crumbs = []
     @crumbs << Central.crumb("Dashboard", "/")
     @active = Central.crumb(@account.props["name"], request.path_info)
