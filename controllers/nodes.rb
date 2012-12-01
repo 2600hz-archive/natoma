@@ -20,10 +20,20 @@ class Central
   get '/nodes/:node' do |n_id|
     pass if n_id == "create"
     @node = Node.info(n_id)
+    cluster_id = Central.redis.hget "zones::#{@node["zone_id"]}", "cluster_id"
+    cluster_name = Central.redis.hget "clusters::#{cluster_id}", "name"
+    z_name = Central.redis.hget "zones::#{@node["zone_id"]}", "name"
+    env_id = Central.redis.hget "clusters::#{cluster_id}", "environment_id"
+    env_name = Central.redis.hget "environments::#{env_id}", "name"
+    acct_id = Central.redis.hget "environments::#{env_id}", "account_id"
+    acct_name = Central.redis.hget "accounts::#{acct_id}", "name"
     @z_version = Central.redis.get "zones::#{@node["zone_id"]}::version"
     @crumbs = []
     @crumbs << Central.crumb("Dashboard", "/")
-    @crumbs << Central.crumb( "Nodes", "/nodes")
+    @crumbs << Central.crumb( "#{acct_name}", "/accounts/#{acct_id}")
+    @crumbs << Central.crumb( "#{env_name}", "/environments/#{env_id}")
+    @crumbs << Central.crumb( "#{cluster_name}", "/clusters/#{cluster_id}")
+    @crumbs << Central.crumb( "#{z_name}", "/zones/#{@node["zone_id"]}")
     @active = Central.crumb(@node["name"] + " node", request.path_info)
     @logs = Log.new n_id
     haml "nodes/show"
