@@ -28,20 +28,8 @@
   %tr{:align => "left"}
     %th SSH Key
   %tr{:align => "left"}
-    %th Node Role(s)
-    %th FreeSWITCH
-  %tr{:align => "left"}
-    %th Remote Log Server
-    %th log.domain.com
-  %tr{:align => "left"}
-    %th Backup Frequency
-    %th Daily
-  %tr{:align => "left"}
-    %th Backup Location
-    %th backup.domain.com
-  %tr{:align => "left"}
-    %th Backup Method
-    %th SCP
+    %th Erlang Cookie
+    %th= @zone.props["erlang_cookie"]
 %hr
 %table{:border => 0, :width => "100%"}
   %tr{:align => "left"}
@@ -51,7 +39,7 @@
   %tr
     %td
       Version
-      = @z_version
+      = @zone.props["version"]
     %td
     %td
       %form{:action => "/zone_deploys", :method => "post"}
