@@ -36,7 +36,8 @@ class Central
     end
 
     def self.upgrade(version, zone_id)
-      zone_nodes = Central.redis.smembers "zones::#{zone_id}::nodes"  
+      zone_nodes = Central.redis.smembers "zones::#{zone_id}::nodes"
+      Central.redis.hset "zones::#{zone_id}", "version", version
       Central.redis.set "zones::#{zone_id}::version", version
       @z = Zone.info(zone_id)
       @ver = version
@@ -45,7 +46,7 @@ class Central
         n = Node.new(node["id"])
         n.test(node, @ver, @z["erlang_cookie"])
         ip = Central.redis.hget "nodes::#{node_id}", "ip"
-        Resque.enqueue(Upgrade, ip, version)
+        Resque.enqueue(Upgrade, ip, node["id"], node["name"], version)
       end
     end
 
