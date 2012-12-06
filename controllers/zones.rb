@@ -36,6 +36,16 @@ class Central
     haml "zones/show"
   end
 
+  get '/zones/edit/:node' do |z_id|
+    @zone = Zone.new(z_id)
+    puts @zone.props["name"]
+    @crumbs = []
+    @crumbs << Central.crumb("Dashboard", "/")
+    @crumbs << Central.crumb( "Nodes", "/nodes")
+    @active = Central.crumb(@zode["name"] + " zone", request.path_info)
+    haml "zones/edit"
+  end
+
   post '/zones' do
     id = counter
     z = Zone.new(id)
