@@ -61,7 +61,7 @@ class Central
     d = Node.deploy(params["ip"], id, params["name"])
     z = Zone.new(params["zone_id"])
     z.add_node(n.id)
-    redirect to('/nodes')
+    redirect to("/zones/#{zone_id}")
   end
 
   post '/node_upgrade' do
