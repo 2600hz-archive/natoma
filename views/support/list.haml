@@ -15,7 +15,13 @@
 		%td
 		%td
 			%form{ :action => "/support/bc_search", :method => "post"}
-				Number or Account Name
+				Account
+				%input{:type => "radio", :name => "account_search_type", :value => "name", :checked => "checked"}
+				||| Realm
+				%input{:type => "radio", :name => "account_search_type", :value => "realm"}
+				||| Phone Number
+				%input{:type => "radio", :name => "account_search_type", :value => "number"}
+				%br/
 				%input{:type => "text", :size => "20", :name => "query"}
 				%input{:type => "submit", :value => "Search", :class => "btn"}
 

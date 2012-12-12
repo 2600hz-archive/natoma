@@ -16,31 +16,23 @@ class Central
 	end
 	
 	post '/support/bc_search' do
-	  @search_results = Accountsearch.new.bigcouch_search(params[:query])
+	  @search_results = Accountsearch.new.bigcouch_search(params[:account_search_type], params[:query])
 	  haml 'support/bcsearch_results', :locals => { :search_results => @search_results }
-	end
-	
-	get '/support/bcsearch_results' do
-	  haml 'support/bcsearch_results', :locals => { :session => session }
 	end
 	
 	get '/support/bigcouch/:id' do
 		@raccount, @rparent, @rsugar, @rsugarcontact, @rticket = Accountsearch.new.bigcouch_info(params[:id])
 		haml 'support/bigcouch_info', :locals => { :raccount => @raccount , :rparent => @rparent , :rsugar => @rsugar , :rsugarcontact => @rsugarcontact , :rticket => @rticket }
 	end
-	
-	get '/support/bigcouch_info' do
-		 haml 'support/bigcouch_info', :locals => { :session => session }
-	end
 
-
-	get '/support/Sugar_Zendesk/:query' do
+	get '/support/sugar_zendesk/:query' do
 		@rsugar, @rsugarcontact = Accountsearch.new.sugar_search(params[:query])
 		@rticket = Accountsearch.new.zendesk_search(params[:query])
 		haml 'support/sugarzendesk_info', :locals => { :rsugar => @rsugar , :rsugarcontact => @rsugarcontact , :rticket => @rticket }
 	end
-
-	get '/support/sugarzendesk_info' do
-		haml 'support/sugarzendesk_info', :locals => { :session => session }
+	
+	post '/support/credit_tool' do
+		@result = Credit_tool.new.set(params[:credit_debit], params[:credit_amt], params[:account_id])
+		haml 'support/credit_result', :locals => { :result => @result }
 	end
 end

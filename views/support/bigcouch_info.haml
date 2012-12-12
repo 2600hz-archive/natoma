@@ -7,6 +7,19 @@
   Realm: #{@raccount["realm"]}
   %br/
   Role: #{@raccount["role"]}
+  %br/
+  Credit: $#{@raccount["credit"]}
+  - if true
+    %form{ :action => "/support/credit_tool", :method => "post" }
+      Add
+      %input{:type => "radio", :name => "credit_debit", :value => "add"}
+      Remove
+      %input{:type => "radio", :name => "credit_debit", :value => "remove"}
+      %br/
+      Credits
+      %input{:type => "hidden", :name => "account_id", :value => "#{@raccount["id"]}"}
+      %input{:type => "text", :size => "20", :name => "credit_amt"}
+      %input{:type => "submit", :value => "Submit", :class => "btn"}
 %h2 Parent Info
 %p
 - @raccount["parent_count"].downto(0) do |i|

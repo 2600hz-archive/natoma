@@ -1,14 +1,15 @@
 class Central
   class Accountsearch
-    def bigcouch_search(query)
+    def bigcouch_search(account_search_type, query)
       #Setup
       bigcouch_url = "184.106.180.226:15984"
       search_results = Hash.new
       search_results["query"] = query
-      if query.match(/[a-zA-Z]/)
+      if (account_search_type == "name")
         #Search by account name
         query = query.gsub(/\s+/, "")
         query = query.downcase
+        query = query.gsub(/\W/, "")
         namesearch_raw = `curl -sS "http://#{bigcouch_url}/accounts/_design/accounts/_view/listing_by_name"`
         namesearch_parsed = JSON.parse(namesearch_raw)
         rows = namesearch_parsed["rows"]
@@ -23,7 +24,23 @@ class Central
         end
         search_results["count"] = search_count
         return search_results
-      else
+      elsif (account_search_type == "realm")
+	    #Search by account realm
+		realmsearch_raw = `curl -sS "http://#{bigcouch_url}/accounts/_design/accounts/_view/listing_by_realm"`
+        realmsearch_parsed = JSON.parse(realmsearch_raw)
+        rows = realmsearch_parsed["rows"]
+        search_count = 0
+        search_results["count"] = 0
+        for i in 0..realmsearch_parsed["rows"].length.to_i
+          if rows[i]["key"].match(/#{query}/)
+            search_results["#{search_count};key"] = rows[i]["key"]
+            search_results["#{search_count};id"] = rows[i]["id"]
+            search_count = search_count+1
+           end
+        end
+        search_results["count"] = search_count
+        return search_results
+      elsif (account_search_type == "number")
         #Search by phone number
         digits = query.gsub(/\D/, '').split(//)
         if (digits.length == 11 and digits[0] == '1')
@@ -48,6 +65,9 @@ class Central
           search_results["error"] = "Number not found in bigcouch db."
         end
         return search_results
+      else
+	    #Broken radio buttons
+	    exit
       end
     end
 
@@ -77,6 +97,11 @@ class Central
         rparent["role#{i}"] = parent_parsed["role"]
         rparent["realm#{i}"] = parent_parsed["realm"]
       end
+      parsed_id = "%2F" + account_id[0..1] + "%2F" + account_id[2..3] + "%2F" + account_id[4..account_id.length]
+      credit_raw = `curl -sS "http://#{bigcouch_url}/account#{parsed_id}/_design/transactions/_view/credit_remaining"`
+      credit_parsed = JSON.parse(credit_raw)
+      rows = credit_parsed["rows"]
+      raccount["credit"] = rows[0]["value"].to_f/10000
       rsugar, rsugarcontact = self.sugar_search(account_parsed["name"])
       rticket = self.zendesk_search(account_id)
       return raccount, rparent, rsugar, rsugarcontact, rticket
@@ -89,7 +114,7 @@ class Central
       sugaraccount = crm::Account.find_by_name(query)
       rsugar["description"] = sugaraccount.description
       rsugar["website"] = sugaraccount.website
-      rsugar["services"] = (sugaraccount.account_services_c).gsub(/\^/, "")
+      rsugar["services"] = (((sugaraccount.account_services_c).gsub(/\^/, "")).gsub(/\_/, " ")).gsub(/\,/, ", ")
       contactcount = 0
       emailcount = 0
       test = Hash.new
