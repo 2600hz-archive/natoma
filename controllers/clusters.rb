@@ -17,7 +17,6 @@ class Central
   end
 
   get '/clusters/:id/create_zone' do |id|
-    puts id
     @cluster_id = id
     haml "zones/create_zone"
   end
@@ -26,9 +25,15 @@ class Central
     pass if c_id == "create"
     @cluster = Cluster.new(c_id)
     @zones = Zone.new(c_id)
+    cluster_name = Central.redis.hget "clusters::#{c_id}", "name"
+    env_id = Central.redis.hget "clusters::#{c_id}", "environment_id"
+    env_name = Central.redis.hget "environments::#{env_id}", "name"
+    acct_id = Central.redis.hget "environments::#{env_id}", "account_id"
+    acct_name = Central.redis.hget "accounts::#{acct_id}", "name"
     @crumbs = []
     @crumbs << Central.crumb("Dashboard", "/")
-    @crumbs << Central.crumb("Clusters", "/clusters")
+    @crumbs << Central.crumb( "#{acct_name}", "/accounts/#{acct_id}")
+    @crumbs << Central.crumb( "#{env_name}", "/environments/#{env_id}")
     @active = Central.crumb(@cluster.props["name"], request.path_info)
     @c_version = Central.redis.get "clusters::#{c_id}::version"
     @c_id = c_id
