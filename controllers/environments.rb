@@ -19,9 +19,12 @@ class Central
   get '/environments/:id' do |id|
     pass if id == "create"
     @environment = Environment.new(id)
+    env_name = Central.redis.hget "environments::#{id}", "name"
+    acct_id = Central.redis.hget "environments::#{id}", "account_id"
+    acct_name = Central.redis.hget "accounts::#{acct_id}", "name"
     @crumbs = []
     @crumbs << Central.crumb("Dashboard", "/")
-    @crumbs << Central.crumb("Environment", "/environments")
+    @crumbs << Central.crumb( "#{acct_name}", "/accounts/#{acct_id}")
     @active = Central.crumb(@environment.props["name"], request.path_info)
     haml "environments/show"
   end

@@ -17,7 +17,8 @@
 -elsif not @logs.stderr.empty?
   %pre.pre-scrollable= @logs.stderr.join("\n")
 
-%h3{:type => "submit", :value => "Create", :class => "btn btn-primary"}Edit
+%h3
+  %a{:href => "/nodes/edit/#{@node["id"]}", :class => "btn btn-primary"}Edit
 
 
 %table{:border => 0, :width => "100%"}

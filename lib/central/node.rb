@@ -104,27 +104,30 @@ class Central
     end
 
     def test(props, ver, z)
-      puts props
-      puts props["name"]
-      props_v = props.reject {|k,v| not ["zone_id", "name", "version"]}
-      puts props_v["version"]
-      puts props_v["name"]
+      puts ver
+      puts "*********"
       @z = z
       @ver = ver
-      puts @ver
-      puts @z
+      case props["role"]
+        when "opensips", "whapps", "rabbitmq"
+          run_list = "role[winkstart_deploy_haproxy]", "role[winkstart_deploy_whapps]", "recipe[apache2::winkstart]", "recipe[winkstart]", "role[winkstart_deploy_opensips]"
+        when "freeswitch"
+          run_list = "role[winkstart_deploy_whistle_fs]"
+        when "bigcouch"
+          run_list = "role[winkstart_deploy_bigcouch]"
+      end
       test = {
-        "name" => props_v["name"],
+        "name" => props["name"],
         "version" => @ver,
         "erlang_cookie" => @z,
-        "client_id" => "foo2"
+        "run_list" => run_list
       }
-      url = "http://hudson.2600hz.org/v2.5.0.json"
+      url = "http://hudson.2600hz.org/#{ver}.json"
       resp = Net::HTTP.get_response(URI.parse(url))
       buffer = resp.body
       result = JSON.parse(buffer)
-      merge_test = test.merge(result)
-      File.open("/tmp/#{props_v["name"]}", "w") do |f|
+      merge_test = result.merge(test)
+      File.open("/tmp/#{id}-#{props["name"]}.json", "w") do |f|
         f.write(JSON.pretty_generate(merge_test))
       end
     end
