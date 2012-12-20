@@ -20,6 +20,7 @@
       %input{:type => "hidden", :name => "account_id", :value => "#{@raccount["id"]}"}
       %input{:type => "text", :size => "20", :name => "credit_amt"}
       %input{:type => "submit", :value => "Submit", :class => "btn"}
+  %a{:href => "/support/number_chck/#{@raccount["id"]}"} Number Check Tool
 %h2 Parent Info
 %p
 - @raccount["parent_count"].downto(0) do |i|

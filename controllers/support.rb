@@ -35,4 +35,9 @@ class Central
 		@result = Credit_tool.new.set(params[:credit_debit], params[:credit_amt], params[:account_id])
 		haml 'support/credit_result', :locals => { :result => @result }
 	end
+
+	get '/support/number_chck/:id' do
+		@result = Number_chck.new.check(params[:id])
+		haml 'support/number_chck', :locals => { :result => @result }
+	end
 end
