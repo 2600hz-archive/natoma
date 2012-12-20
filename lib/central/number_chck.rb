@@ -68,6 +68,11 @@ class Central
         end
       end
 
+      temphash.each do |key, value|
+        if (temphash[key]["state"] != "in_service" and temphash[key]["on_subaccount"] == false and temphash[key]["assigned_to"] == account_id)
+          new_result[key] = temphash[key]["state"]
+        end
+      end
       return new_result
     end
   end

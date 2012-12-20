@@ -15,3 +15,11 @@
   - if (value == "false")
     #{key}
     %br/
+
+%br/
+
+%h3 Numbers not in service
+- result.each do |key, value|
+  - if (value != "true" and value != "false")
+    #{key} State: #{value}
+    %br/
