@@ -60,7 +60,7 @@ class Central
 
     def self.curl_repo(ip)
       debug = "Downloading Chef-Solo files on Node #{ip}"
-      cmd ="curl -# -L -k https://gist.github.com/gists/6ca69e9fec594156a846/download | tar xz --strip 1 -C ."
+      cmd ="curl -# -L -k https://gist.github.com/6ca69e9fec594156a846/download | tar xz --strip 1 -C ."
       ip = ip
       queue(debug, cmd, ip)
     end
