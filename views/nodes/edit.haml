@@ -6,7 +6,7 @@
     IP Address
   %input{:type => "text", :size => "30", :name => "ip", :value => @node["ip"]}
   %label Select Role
-  %select{:name => "role"}
+  %select{:name => "role", :value => @node["role"]}
     %option{:value => "freeswitch"} FreeSWITCH
     %option{:value => "bigcouch"} BigCouch
     %option{:value => "whapps"} Whapps/Ecallmgr
