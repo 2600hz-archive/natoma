@@ -34,12 +34,3 @@ group :development do
   gem "rake"
   gem 'compass'
 end
-
-# Include the base plugins
-group :core do
-  gem 'central-core'
-end
-
-group :noload do
-  gem "central-hook-skeleton"
-end
