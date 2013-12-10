@@ -1,0 +1,8 @@
+%h2 Credit Result
+- if true
+  Debug message: #{result["msg"]}
+  %br/
+  %br/
+  Current credit: $#{result["current"]}
+  %br/
+  %a{:href => "/support/bigcouch/#{result["id"]}"} Return to Account

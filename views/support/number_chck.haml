@@ -1,0 +1,25 @@
+%h2 Number Check Result
+
+%br/
+
+%h3 Numbers in Callflows
+- result.each do |key, value|
+  - if (value == "true")
+    #{key}
+    %br/
+
+%br/
+
+%h3 Numbers not in any callflow
+- result.each do |key, value|
+  - if (value == "false")
+    #{key}
+    %br/
+
+%br/
+
+%h3 Numbers not in service
+- result.each do |key, value|
+  - if (value != "true" and value != "false")
+    #{key} State: #{value}
+    %br/
