@@ -2,7 +2,7 @@ class Central
   class Accountsearch
     def bigcouch_search(account_search_type, query)
       #Setup
-      bigcouch_url = "184.106.180.226:15984"
+      bigcouch_url = "10.26.0.61:15984"
       search_results = Hash.new
       search_results["query"] = query
       if (account_search_type == "name")
@@ -42,9 +42,9 @@ class Central
         return search_results
       elsif (account_search_type == "number")
         #Search by phone number
-        digits = query.gsub(/\D/, '').split(//)
+        digits = query.gsub(/[^0-9]/, '')
         if (digits.length == 11 and digits[0] == '1')
-          digits.shift
+          digits[0] = ''
         end
         if (digits.length == 10)
           formnum = digits
@@ -73,7 +73,7 @@ class Central
 
     def bigcouch_info(account_id)
       #Setup
-      bigcouch_url = "184.106.180.226:15984"
+      bigcouch_url = "10.26.0.61:15984"
       raccount = Hash.new
       rparent = Hash.new
       rsugar = Hash.new
